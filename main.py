@@ -49,12 +49,17 @@ def main():
 
         for ast in asteroids:
             if player.check_collision(ast):
-                print("Game Over")
-                return
+                player.take_damage(ast)
+                    
             for bullet in shots:
                 if bullet.check_collision(ast):
                     ast.split()
                     bullet.kill()
+        
+
+        if player.lives <= 0:
+            print("Game Over")
+            return
 
         #last calls of the game loop
         pygame.display.flip() #refresh screen
