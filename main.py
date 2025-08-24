@@ -61,9 +61,10 @@ def main():
                     
             for bullet in shots:
                 if bullet.check_collision(ast):
+                    player.gain_score(ast.point)
                     ast.split()
                     bullet.kill()
-                    player.gain_score(5)
+                    
                             
         if len(collectibles.sprites())>MAX_COLLECTIBLE_ON_MAP:
             random.choice(collectibles.sprites()).kill()
@@ -85,7 +86,7 @@ def main():
     pygame.display.flip()
     while True:
         keys= pygame.key.get_pressed()
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_q]:
             return
         for event in pygame.event.get():
             if event.type ==pygame.QUIT:
