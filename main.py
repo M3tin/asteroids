@@ -1,9 +1,11 @@
 import pygame
+import random
 from constants import *
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
+from collectibles import Collectible
 
 
 def main():
@@ -21,11 +23,13 @@ def main():
     drawable=pygame.sprite.Group()
     asteroids=pygame.sprite.Group()
     shots=pygame.sprite.Group()
+    collectibles=pygame.sprite.Group()
 
     Player.containers=(updatable, drawable)
     Asteroid.containers=(asteroids,updatable,drawable)
     AsteroidField.containers=(updatable)
     Shot.containers=(shots,updatable,drawable)
+    Collectible.containers=(collectibles,drawable)
 
     #initialize game objects
     player=Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
@@ -46,6 +50,10 @@ def main():
         #draw all sprites
         for obj in drawable:
             obj.draw(screen)
+        
+        for colb in collectibles:
+            if player.check_collision(colb):
+                colb.collect(player)
 
         for ast in asteroids:
             if player.check_collision(ast):
@@ -55,8 +63,9 @@ def main():
                 if bullet.check_collision(ast):
                     ast.split()
                     bullet.kill()
-        
-
+                            
+        if len(collectibles.sprites())>MAX_COLLECTIBLE_ON_MAP:
+            random.choice(collectibles.sprites()).kill()
         if player.lives <= 0:
             print("Game Over")
             return
