@@ -42,7 +42,12 @@ def main():
         
         #draw all sprites
         for obj in drawable:
-            obj.draw(screen)       
+            obj.draw(screen)
+
+        for ast in asteroids:
+            if player.check_collision(ast):
+                print("Game Over")
+                return
 
         #last calls of the game loop
         pygame.display.flip() #refresh screen
