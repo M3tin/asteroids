@@ -69,11 +69,28 @@ def main():
             random.choice(collectibles.sprites()).kill()
         if player.lives <= 0:
             print(f"Game Over with score:{player.score}")
-            return
+            break
 
         #last calls of the game loop
         pygame.display.flip() #refresh screen
         dt=clock.tick(60)/1000 #delta time
+    end_screen=pygame.Surface(((SCREEN_WIDTH, SCREEN_HEIGHT)))
+    end_screen.fill("gray")
+    text_engine=pygame.font.Font(size=72)
+    game_over=text_engine.render("GAME OVER!",True,"black")
+    end_screen.blit(game_over,pygame.Vector2(SCREEN_WIDTH/2-170,SCREEN_HEIGHT/2-200))
+    score=text_engine.render(str(int(player.score)),True,"darkgoldenrod4")
+    end_screen.blit(score,pygame.Vector2(SCREEN_WIDTH/2-10,SCREEN_HEIGHT/2))
+    screen.blit(end_screen,(0,0))
+    pygame.display.flip()
+    while True:
+        keys= pygame.key.get_pressed()
+        if keys[pygame.K_SPACE]:
+            return
+        for event in pygame.event.get():
+            if event.type ==pygame.QUIT:
+                return
+
 
 if __name__ == "__main__":
     main()

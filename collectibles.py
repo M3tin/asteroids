@@ -5,10 +5,11 @@ import random
 from player import Player
 
 COLLECTIBLE_TYPES = {
-    "shield":{"color":"mediumturquoise","weight":3},
-    "burst":{"color":"indianred3","weight":2},
+    "shield":{"color":"mediumturquoise","weight":4},
+    "burst":{"color":"indianred3","weight":3},
     "trap":{"color":"red","weight":1},
-    "point":{"color":"gold3","weight":10}
+    "point":{"color":"gold3","weight":2},
+    "life":{"color":"pink","weight":1}
     }
 
 
@@ -35,6 +36,9 @@ class Collectible(CircleShape):
                 player.take_damage(self)
             case "point":
                 player.gain_score(50)
+            case "life":
+                if player.lives < 3:
+                    player.lives+=1
         self.kill()
     
     def draw(self,screen):
