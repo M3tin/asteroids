@@ -13,6 +13,8 @@ class Player(CircleShape):
         self.invul=0
         self.blink=False
         self.blinktimer=0
+        self.score=0
+        self.text_engine=pygame.font.Font(size=36)
 
     # in the player class
     def triangle(self):
@@ -26,13 +28,18 @@ class Player(CircleShape):
     def draw(self, screen):
         self.draw_ship(screen)
         self.draw_lives(screen)
+        self.draw_score(screen)
     
+    def draw_score(self,screen):
+        score_text=str(int(self.score))
+        temp_surf=self.text_engine.render(score_text,False,"darkgoldenrod1")
+        screen.blit(temp_surf,pygame.Vector2(80,100))
+
     def draw_lives(self, screen):
         heartpos=pygame.Vector2(50,50)
         for i in range(0,self.lives):
             heartpos[0]+=50
             pygame.draw.circle(screen,"pink",heartpos,20)
-        
 
     def draw_ship(self, screen):
         if self.invul>0:
@@ -70,14 +77,18 @@ class Player(CircleShape):
             other.kill()
         else:
             self.lives-=1
-            self.invul=0.5
+            self.invul=1
     
     def check_collision(self, other):
         if self.invul > 0:
             return False
         return super().check_collision(other)
     
+    def gain_score(self, amount):
+        self.score+=amount
+        
     def update(self, dt):
+        self.gain_score(dt)
         keys= pygame.key.get_pressed()
         self.weapon_timer-=dt
         self.shield-=dt
@@ -101,3 +112,4 @@ class Player(CircleShape):
         
         if keys[pygame.K_SPACE] and self.weapon_timer<=0:
             self.shoot()
+        

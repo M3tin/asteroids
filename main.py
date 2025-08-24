@@ -63,11 +63,12 @@ def main():
                 if bullet.check_collision(ast):
                     ast.split()
                     bullet.kill()
+                    player.gain_score(5)
                             
         if len(collectibles.sprites())>MAX_COLLECTIBLE_ON_MAP:
             random.choice(collectibles.sprites()).kill()
         if player.lives <= 0:
-            print("Game Over")
+            print(f"Game Over with score:{player.score}")
             return
 
         #last calls of the game loop
